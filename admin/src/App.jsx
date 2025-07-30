@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
@@ -8,8 +8,16 @@ import Add from "./pages/Add";
 import List from "./pages/List";
 import Login from "./components/Login";
 
-const App = () => {
-  const [token, setToken] = useState("");
+  export const server_url = import.meta.env.VITE_SERVER_URL
+  export const currency = "₦"
+
+
+const App = () => {  
+  const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
+
+  useEffect(() => {
+    localStorage.setItem("token", token)
+  }, [token])
   return (
     <main>
       <ToastContainer />
