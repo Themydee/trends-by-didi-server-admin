@@ -17,12 +17,29 @@ const PORT = process.env.PORT || 5000
 
 // Middleware
 app.use(express.json())
-app.use(cors({
-  origin: ['https://alli-trends-by-didi.vercel.app', 'https://trends-by-didi-server-admin.vercel.app'], 
-  credentials: true,
- allowedHeaders: ['Content-Type', 'Authorization'],
+const allowedOrigins = [
+  'https://diditrends.vercel.app',
+  'https://alli-trends-by-didi.vercel.app',
+  'http://localhost:5173' 
+];
 
-}))
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Connect DB
 db() 
