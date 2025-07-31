@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
 }, { _id: false });
 
 const itemSchema = new mongoose.Schema({
-  _id: String, // Product ID as string
+  productId: String, // Product ID as string
   title: String,
-  image: String,
+  image: [String],
   price: Number,
   size: String,
   quantity: Number,

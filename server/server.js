@@ -8,6 +8,7 @@ import productRoute from './routes/product.route.js'
 import cartRoute from './routes/cart.route.js'
 import uploadRoutes from './routes/upload.route.js';
 import orderRoutes from './routes/order.route.js';
+import analyticsRoutes from "./routes/analytics.route.js";
 
 dotenv.config()
 
@@ -20,7 +21,8 @@ app.use(express.json())
 const allowedOrigins = [
   'https://diditrends.vercel.app',
   'https://alli-trends-by-didi.vercel.app',
-  'http://localhost:5173' 
+  'http://localhost:5173',
+  'http://localhost:5174'
 ];
 
 app.use(
@@ -51,6 +53,7 @@ app.use('/api/cart', cartRoute)
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use("/api/analytics", analyticsRoutes);
 
 
 app.get('/', (req, res) => {

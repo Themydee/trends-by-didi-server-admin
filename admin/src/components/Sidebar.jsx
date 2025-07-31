@@ -51,6 +51,18 @@ const Sidebar = ({setToken}) => {
             <div className="hidden lg:flex">View Orders</div>
           </NavLink>
 
+           <NavLink
+            to="/analytics"
+            className={({ isActive }) =>
+              isActive
+                ? 'active-link'
+                : 'flexStart gap-x-2 sm:pl-12 p-6 medium-15 cursor-pointer h-10 rounded-xl'
+            }
+          >
+            <MdFactCheck />
+            <div className="hidden lg:flex">View Analytics</div>
+          </NavLink>
+
           <div className="max-sm:ml-5 sm:mt-72">
             <button onClick={() => setToken("")}className="flexStart gap-x-2 sm:pl-12 p-5 medium-15 cursor-pointer h-10 rounded-xl text-red-500">
               <BiLogOut className='text-lg'/>

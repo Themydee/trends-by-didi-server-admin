@@ -2,6 +2,7 @@ import Order from "../models/order.model.js";
 
 export const placeOrder = async (req, res) => {
   try {
+    console.log("Incoming Order Payload:", req.body)
     const { user, items, shipping, paymentProof, totalAmount } = req.body;
 
     // Validate required fields

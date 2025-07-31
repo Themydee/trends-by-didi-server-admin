@@ -7,6 +7,7 @@ import Orders from "./pages/Orders";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Login from "./components/Login";
+import Analytics from "./pages/Analytics";
 
   export const server_url = import.meta.env.VITE_SERVER_URL
   export const currency = "₦"
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/" element={<Add token={token}/>} />
               <Route path="/list" element={<List token={token}/>} />
               <Route path="/orders" element={<Orders token={token}/>} />
+              <Route path="/analytics" element={<Analytics token={token}/>} />
             </Routes>
           </div>
         </div>
