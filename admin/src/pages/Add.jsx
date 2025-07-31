@@ -17,13 +17,14 @@ const Add = ({ token }) => {
   const [subCategory, setSubCategory] = useState("");
   const [popular, setPopular] = useState(false);
   const [sizes, setSizes] = useState([
+  
   { size: "S", quantity: 0 },
   { size: "M", quantity: 0 },
   { size: "L", quantity: 0 },
   { size: "XL", quantity: 0 },
   { size: "XXL", quantity: 0 },
 ]);
-;
+
   const [colors, setColors] = useState([]);
 
   const onSubmitHandler = async (e) => {
@@ -118,9 +119,10 @@ formData.append("colors", JSON.stringify(colors));
                   className="max-w-28 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
                   <option value="">Select Category</option> 
-                  <option value="men">Men</option>
-                  <option value="women">Women</option>
-                  <option value="kids">Unisex</option>
+                  <option value="Wholesale women">Wholesale Women</option>
+                  <option value="Wholesale unisex">Wholesale Unisex</option>
+                  <option value="Single Sale Women">Single Sale Women</option>
+                  <option value="Single Sale Unisex">Single Sale Unisex</option>
                 </select>
               </div>
 
@@ -132,9 +134,9 @@ formData.append("colors", JSON.stringify(colors));
                   className="max-w-20 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
                   <option value="">Select Sub Category</option> 
-                  <option value="topwear">Bubu Gown</option>
-                  <option value="bottomwear">2pcs Wear</option>
-                  <option value="winterwear">Winter Wear</option>
+                  <option value="Bubu Gown">Bubu Gown</option>
+                  <option value="2pcs wears">2pcs Wear</option>
+                  <option value="Dresses">Dresses</option>
                 </select>
               </div>
             </div>
