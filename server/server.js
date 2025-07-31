@@ -18,9 +18,10 @@ const PORT = process.env.PORT || 5000
 // Middleware
 app.use(express.json())
 app.use(cors({
-  origin: ['https://diditrends.vercel.app', 'https://trends-by-didi-server-admin.vercel.app'], 
+  origin: ['https://alli-trends-by-didi.vercel.app', 'https://trends-by-didi-server-admin.vercel.app'], 
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization", "token"],
+ allowedHeaders: ['Content-Type', 'Authorization'],
+
 }))
 
 // Connect DB
