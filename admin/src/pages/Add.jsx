@@ -16,7 +16,14 @@ const Add = ({ token }) => {
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [popular, setPopular] = useState(false);
-  const [sizes, setSizes] = useState([]);
+  const [sizes, setSizes] = useState([
+  { size: "S", quantity: 0 },
+  { size: "M", quantity: 0 },
+  { size: "L", quantity: 0 },
+  { size: "XL", quantity: 0 },
+  { size: "XXL", quantity: 0 },
+]);
+;
   const [colors, setColors] = useState([]);
 
   const onSubmitHandler = async (e) => {
@@ -113,7 +120,7 @@ formData.append("colors", JSON.stringify(colors));
                   <option value="">Select Category</option> 
                   <option value="men">Men</option>
                   <option value="women">Women</option>
-                  <option value="kids">Kids</option>
+                  <option value="kids">Unisex</option>
                 </select>
               </div>
 
@@ -125,8 +132,8 @@ formData.append("colors", JSON.stringify(colors));
                   className="max-w-20 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
                   <option value="">Select Sub Category</option> 
-                  <option value="topwear">Top Wear</option>
-                  <option value="bottomwear">Bottom Wear</option>
+                  <option value="topwear">Bubu Gown</option>
+                  <option value="bottomwear">2pcs Wear</option>
                   <option value="winterwear">Winter Wear</option>
                 </select>
               </div>
@@ -145,100 +152,52 @@ formData.append("colors", JSON.stringify(colors));
           </div>
         </div>
 
-        <div>
-          <h5 className="h5">Product Sizes</h5>
-          <div className="flex gap-3 mt-2">
-            <div
-              onClick={() =>
-                setSizes((prev) =>
-                  prev.includes("S")
-                    ? prev.filter((item) => item !== "S")
-                    : [...prev, "S"]
-                )
-              }
-            >
-              <span
-                className={`${
-                  sizes.includes("S") ? "bg-teritary text-white" : "bg-white"
-                } text-gray-50 rounded ring-1  ring-slate-900/5 px-3 py-1 cursor-pointer`}
-              >
-                S
-              </span>
-            </div>
+     <div>
+  <h5 className="h5">Product Sizes & Quantities</h5>
+  <div className="flex flex-wrap gap-4 mt-2">
+    {["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"].map((label) => {
+      const existing = sizes.find((s) => s.size === label);
 
-            <div
-              onClick={() =>
-                setSizes((prev) =>
-                  prev.includes("M")
-                    ? prev.filter((item) => item !== "M")
-                    : [...prev, "M"]
-                )
+      return (
+        <div key={label} className="flex flex-col items-center gap-1">
+          <span
+            onClick={() => {
+              if (existing) {
+                setSizes((prev) => prev.filter((s) => s.size !== label));
+              } else {
+                setSizes((prev) => [...prev, { size: label, quantity: 0 }]);
               }
-            >
-              <span
-                className={`${
-                  sizes.includes("M") ? "bg-teritary text-white" : "bg-white"
-                } text-gray-50 rounded ring-1  ring-slate-900/5 px-3 py-1 cursor-pointer`}
-              >
-                M
-              </span>
-            </div>
+            }}
+            className={`${
+              existing ? "bg-teritary text-white" : "bg-white"
+            } text-gray-50 rounded ring-1 ring-slate-900/5 px-3 py-1 cursor-pointer`}
+          >
+            {label}
+          </span>
 
-            <div
-              onClick={() =>
+          {existing && (
+            <input
+              type="number"
+              min={0}
+              value={existing.quantity}
+              onChange={(e) => {
+                const qty = parseInt(e.target.value) || 0;
                 setSizes((prev) =>
-                  prev.includes("L")
-                    ? prev.filter((item) => item !== "L")
-                    : [...prev, "L"]
-                )
-              }
-            >
-              <span
-                className={`${
-                  sizes.includes("L") ? "bg-teritary text-white" : "bg-white"
-                } text-gray-50 rounded ring-1  ring-slate-900/5 px-3 py-1 cursor-pointer`}
-              >
-                L
-              </span>
-            </div>
-
-            <div
-              onClick={() =>
-                setSizes((prev) =>
-                  prev.includes("XL")
-                    ? prev.filter((item) => item !== "XL")
-                    : [...prev, "XL"]
-                )
-              }
-            >
-              <span
-                className={`${
-                  sizes.includes("XL") ? "bg-teritary text-white" : "bg-white"
-                } text-gray-50 rounded ring-1  ring-slate-900/5 px-3 py-1 cursor-pointer`}
-              >
-                XL
-              </span>
-            </div>
-
-            <div
-              onClick={() =>
-                setSizes((prev) =>
-                  prev.includes("XXL")
-                    ? prev.filter((item) => item !== "XXL")
-                    : [...prev, "XXL"]
-                )
-              }
-            >
-              <span
-                className={`${
-                  sizes.includes("XXL") ? "bg-teritary text-white" : "bg-white"
-                } text-gray-50 rounded ring-1  ring-slate-900/5 px-3 py-1 cursor-pointer`}
-              >
-                XXL
-              </span>
-            </div>
-          </div>
+                  prev.map((s) =>
+                    s.size === label ? { ...s, quantity: qty } : s
+                  )
+                );
+              }}
+              className="w-16 px-2 py-1 rounded border text-sm"
+              placeholder="Qty"
+            />
+          )}
         </div>
+      );
+    })}
+  </div>
+</div>
+
 
         <div className="mt-6">
           <h5 className="h5">Product Colors</h5>
