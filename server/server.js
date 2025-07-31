@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000
 // Middleware
 app.use(express.json())
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'], 
+  origin: ['https://diditrends.vercel.app/', 'https://trends-by-didi-server-admin.vercel.app/'], 
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization", "token"],
 }))
