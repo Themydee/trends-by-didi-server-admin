@@ -2,7 +2,7 @@ import Order from "../models/order.model.js";
 
 export const placeOrder = async (req, res) => {
   try {
-    console.log("Incoming Order Payload:", req.body)
+ 
     const { user, items, shipping, paymentProof, totalAmount } = req.body;
 
     // Validate required fields
@@ -34,8 +34,8 @@ export const placeOrder = async (req, res) => {
 // GET /api/orders/my
 export const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ "user.email": req.user.email }).sort({ createdAt: -1 });
-
+    console.log("req.user.email:", req.user.email); // Add this line
+    const orders = await Order.find({ "email": req.user.email }).sort({ createdAt: -1 });
     res.json({ success: true, orders });
   } catch (error) {
     console.error("Get My Orders Error:", error);
