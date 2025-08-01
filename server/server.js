@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000
 // Middleware
 app.use(express.json())
 const allowedOrigins = [
-  'https://diditrends.vercel.app',
+  'https://trends-by-didi-server-admin.vercel.app/',
   'https://alli-trends-by-didi.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
