@@ -2,13 +2,13 @@ import { User } from "../models/user.models.js";
 
 export const addToCart = async (req, res) => {
   try {
-    const { itemId, size, color } = req.body;
+    const { itemId, size } = req.body;
     const userId = req.user.id;
 
-    if (!itemId || !size || !color) {
+    if (!itemId || !size) {
       return res.status(400).json({
         success: false,
-        message: "itemId, size, and color are required",
+        message: "itemId and size are required",
       });
     }
 
@@ -17,7 +17,7 @@ export const addToCart = async (req, res) => {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    const variantKey = `${size}_${color}`;
+    const variantKey = `${size}`;
     let cartData = userData.cartData || {};
 
     if (!cartData[itemId]) {
@@ -50,17 +50,17 @@ export const addToCart = async (req, res) => {
 
 export const updateCart = async (req, res) => {
   try {
-    const { itemId, size, color, quantity } = req.body;
+    const { itemId, size, quantity } = req.body;
     const userId = req.user.id;
 
-    if (!itemId || !size || !color || typeof quantity !== "number") {
+    if (!itemId || !size || typeof quantity !== "number") {
       return res.status(400).json({
         success: false,
-        message: "itemId, size, color, and quantity are required",
+        message: "itemId, size, and quantity are required",
       });
     }
 
-    const variantKey = `${size}_${color}`;
+    const variantKey = `${size}`;
     const userData = await User.findById(userId);
     if (!userData) {
       return res.status(404).json({ success: false, message: "User not found" });
@@ -94,7 +94,6 @@ export const updateCart = async (req, res) => {
   }
 };
 
-
 export const getUserCart = async (req, res) => {
     try {
         const userId = req.user.id; // Extract userId from the authenticated user's token
@@ -113,17 +112,17 @@ export const getUserCart = async (req, res) => {
 
 export const removeFromCart = async (req, res) => {
   try {
-    const { itemId, size, color } = req.body;
+    const { itemId, size } = req.body;
     const userId = req.user.id;
 
-    if (!itemId || !size || !color) {
+    if (!itemId || !size) {
       return res.status(400).json({
         success: false,
-        message: "itemId, size, and color are required",
+        message: "itemId and size are required",
       });
     }
 
-    const variantKey = `${size}_${color}`;
+    const variantKey = `${size}`;
     const userData = await User.findById(userId);
     if (!userData) {
       return res.status(404).json({ success: false, message: "User not found" });

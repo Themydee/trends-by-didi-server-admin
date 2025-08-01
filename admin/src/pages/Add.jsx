@@ -40,8 +40,6 @@ const Add = ({ token }) => {
       formData.append("subCategory", subCategory);
       formData.append("popular", popular);
       formData.append("sizes", JSON.stringify(sizes));
-formData.append("colors", JSON.stringify(colors));
-
 
       image1 && formData.append("image1", image1);
       image2 && formData.append("image2", image2);
@@ -69,7 +67,6 @@ formData.append("colors", JSON.stringify(colors));
           setImage4(false)
           setPrice("")
           setSizes([])
-          setColors([])
         } else{
           toast.error(response.data.message)
         }
@@ -199,39 +196,6 @@ formData.append("colors", JSON.stringify(colors));
     })}
   </div>
 </div>
-
-
-        <div className="mt-6">
-          <h5 className="h5">Product Colors</h5>
-          <div className="flex gap-3 mt-2 flex-wrap">
-            {[
-              "#000000",
-              "#ffffff",
-              "#ff0000",
-              "#00ff00",
-              "#0000ff",
-              "#f59e0b",
-            ].map((color) => (
-              <div
-                key={color}
-                onClick={() =>
-                  setColors((prev) =>
-                    prev.includes(color)
-                      ? prev.filter((item) => item !== color)
-                      : [...prev, color]
-                  )
-                }
-                className={`w-8 h-8 rounded-full ring-2 cursor-pointer transition ${
-                  colors.includes(color)
-                    ? "ring-secondary scale-105"
-                    : "ring-slate-300"
-                }`}
-                style={{ backgroundColor: color }}
-                title={color}
-              ></div>
-            ))}
-          </div>
-        </div>
 
         <div className="flex gap-2 pt-2">
           <label htmlFor="image1">

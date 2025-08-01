@@ -4,7 +4,7 @@ import {v2 as cloudinary} from 'cloudinary';
 
 export const createProduct = async (req, res) => {
   try {
-     const { name, description, price, category, subCategory,sizes, colors, popular } = req.body;
+     const { name, description, price, category, subCategory,sizes, popular } = req.body;
 
         const image1 = req.files.image1 && req.files.image1[0];
         const image2 = req.files.image2 && req.files.image2[0];
@@ -30,7 +30,6 @@ export const createProduct = async (req, res) => {
             subCategory,
             popular: popular === 'true' ? true : false,
             sizes: JSON.parse(sizes),
-            colors: JSON.parse(colors),
             image: imageUrls,
             date: Date.now()
         }

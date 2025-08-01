@@ -29,10 +29,6 @@ const productSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  colors: {
-    type: Array,
-    required: true,
-  },
   popular: {
     type: Boolean,
     default: false,
