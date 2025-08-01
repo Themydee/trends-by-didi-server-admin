@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -25,9 +25,19 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isWholesale: {
+    type: Boolean,
+    default: false,
+  },
   sizes: {
-    type: Array,
-    required: true,
+    type: Array, // for retail products only
+    required: function () {
+      return !this.isWholesale; // sizes required if not wholesale
+    },
+  },
+  stock: {
+    type: Number, // used for wholesale stock only
+    default: 0,
   },
   popular: {
     type: Boolean,
