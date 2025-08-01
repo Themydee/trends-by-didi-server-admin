@@ -123,9 +123,11 @@ const [wholesaleQty, setWholesaleQty] = useState(0);
                   className="max-w-28 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
                   <option value="">Select Category</option>
-                  <option value="Wholesale Women">Wholesale Women</option>
+                  <option value="Wholesale Bubu">Wholesale Bubu</option>
+                   <option value="Wholesale Dress">Wholesale Dress</option>
                   <option value="Wholesale Unisex">Wholesale Unisex</option>
-                  <option value="Single Sale Women">Single Sale Women</option>
+                  <option value="Single Sale Bubu">Single Sale Bubu</option>
+                   <option value="Single Sale Dress">Single Sale Dress</option>
                   <option value="Single Sale Unisex">Single Sale Unisex</option>
                 </select>
               </div>
