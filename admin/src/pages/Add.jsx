@@ -17,15 +17,15 @@ const Add = ({ token }) => {
   const [subCategory, setSubCategory] = useState("");
   const [popular, setPopular] = useState(false);
   const [sizes, setSizes] = useState([
-  
-  { size: "S", quantity: 0 },
-  { size: "M", quantity: 0 },
-  { size: "L", quantity: 0 },
-  { size: "XL", quantity: 0 },
-  { size: "XXL", quantity: 0 },
-]);
+    { size: "S", quantity: 0 },
+    { size: "M", quantity: 0 },
+    { size: "L", quantity: 0 },
+    { size: "XL", quantity: 0 },
+    { size: "XXL", quantity: 0 },
+  ]);
 
-  const [colors, setColors] = useState([]);
+  const [isWholesale, setIsWholesale] = useState(false);
+const [wholesaleQty, setWholesaleQty] = useState(0);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -39,7 +39,14 @@ const Add = ({ token }) => {
       formData.append("category", category);
       formData.append("subCategory", subCategory);
       formData.append("popular", popular);
-      formData.append("sizes", JSON.stringify(sizes));
+      if (isWholesale) {
+        formData.append(
+          "sizes",
+          JSON.stringify([{ size: "wholesale", quantity: wholesaleQty }])
+        );
+      } else {
+        formData.append("sizes", JSON.stringify(sizes));
+      }
 
       image1 && formData.append("image1", image1);
       image2 && formData.append("image2", image2);
@@ -57,22 +64,22 @@ const Add = ({ token }) => {
         }
       );
 
-      if(response.data.success){
-          toast.success(response.data.message)
-          setName("")
-          setDescription("")
-          setImage1(false)
-          setImage2(false)
-          setImage3(false)
-          setImage4(false)
-          setPrice("")
-          setSizes([])
-        } else{
-          toast.error(response.data.message)
-        }
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setName("");
+        setDescription("");
+        setImage1(false);
+        setImage2(false);
+        setImage3(false);
+        setImage4(false);
+        setPrice("");
+        setSizes([]);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -115,9 +122,9 @@ const Add = ({ token }) => {
                   value={category}
                   className="max-w-28 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
-                  <option value="">Select Category</option> 
-                  <option value="Wholesale women">Wholesale Women</option>
-                  <option value="Wholesale unisex">Wholesale Unisex</option>
+                  <option value="">Select Category</option>
+                  <option value="Wholesale Women">Wholesale Women</option>
+                  <option value="Wholesale Unisex">Wholesale Unisex</option>
                   <option value="Single Sale Women">Single Sale Women</option>
                   <option value="Single Sale Unisex">Single Sale Unisex</option>
                 </select>
@@ -130,7 +137,7 @@ const Add = ({ token }) => {
                   value={subCategory}
                   className="max-w-20 px-3 py-2 text-gray-30 ring-1 ring-slate-900/5 bg-white rounded"
                 >
-                  <option value="">Select Sub Category</option> 
+                  <option value="">Select Sub Category</option>
                   <option value="Bubu Gown">Bubu Gown</option>
                   <option value="2pcs wears">2pcs Wear</option>
                   <option value="Dresses">Dresses</option>
@@ -151,51 +158,85 @@ const Add = ({ token }) => {
           </div>
         </div>
 
-     <div>
-  <h5 className="h5">Product Sizes & Quantities</h5>
-  <div className="flex flex-wrap gap-4 mt-2">
-    {["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"].map((label) => {
-      const existing = sizes.find((s) => s.size === label);
+        <div className="flexStart gap-2 mb-3">
+          <input
+            type="checkbox"
+            id="wholesale"
+            checked={isWholesale}
+            onChange={() => setIsWholesale(!isWholesale)}
+          />
+          <label htmlFor="wholesale">This is a wholesale product</label>
+        </div>
 
-      return (
-        <div key={label} className="flex flex-col items-center gap-1">
-          <span
-            onClick={() => {
-              if (existing) {
-                setSizes((prev) => prev.filter((s) => s.size !== label));
-              } else {
-                setSizes((prev) => [...prev, { size: label, quantity: 0 }]);
-              }
-            }}
-            className={`${
-              existing ? "bg-teritary text-white" : "bg-white"
-            } text-gray-50 rounded ring-1 ring-slate-900/5 px-3 py-1 cursor-pointer`}
-          >
-            {label}
-          </span>
-
-          {existing && (
+        {isWholesale ? (
+          <div>
+            <h5 className="h5">Wholesale Quantity</h5>
             <input
               type="number"
               min={0}
-              value={existing.quantity}
-              onChange={(e) => {
-                const qty = parseInt(e.target.value) || 0;
-                setSizes((prev) =>
-                  prev.map((s) =>
-                    s.size === label ? { ...s, quantity: qty } : s
-                  )
-                );
-              }}
-              className="w-16 px-2 py-1 rounded border text-sm"
-              placeholder="Qty"
+              value={wholesaleQty}
+              onChange={(e) => setWholesaleQty(parseInt(e.target.value) || 0)}
+              className="w-32 px-2 py-1 rounded border text-sm"
+              placeholder="Enter quantity"
             />
-          )}
-        </div>
-      );
-    })}
-  </div>
-</div>
+          </div>
+        ) : (
+          <div>
+            <h5 className="h5">Product Sizes & Quantities</h5>
+            <div className="flex flex-wrap gap-4 mt-2">
+              {["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL", "6XL"].map(
+                (label) => {
+                  const existing = sizes.find((s) => s.size === label);
+
+                  return (
+                    <div
+                      key={label}
+                      className="flex flex-col items-center gap-1"
+                    >
+                      <span
+                        onClick={() => {
+                          if (existing) {
+                            setSizes((prev) =>
+                              prev.filter((s) => s.size !== label)
+                            );
+                          } else {
+                            setSizes((prev) => [
+                              ...prev,
+                              { size: label, quantity: 0 },
+                            ]);
+                          }
+                        }}
+                        className={`${
+                          existing ? "bg-teritary text-white" : "bg-white"
+                        } text-gray-50 rounded ring-1 ring-slate-900/5 px-3 py-1 cursor-pointer`}
+                      >
+                        {label}
+                      </span>
+
+                      {existing && (
+                        <input
+                          type="number"
+                          min={0}
+                          value={existing.quantity}
+                          onChange={(e) => {
+                            const qty = parseInt(e.target.value) || 0;
+                            setSizes((prev) =>
+                              prev.map((s) =>
+                                s.size === label ? { ...s, quantity: qty } : s
+                              )
+                            );
+                          }}
+                          className="w-16 px-2 py-1 rounded border text-sm"
+                          placeholder="Qty"
+                        />
+                      )}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="flex gap-2 pt-2">
           <label htmlFor="image1">
