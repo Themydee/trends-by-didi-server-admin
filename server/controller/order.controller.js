@@ -6,7 +6,9 @@ export const placeOrder = async (req, res) => {
     const { user, items, shipping, paymentProof, totalAmount } = req.body;
 
     if (!user || typeof user !== "object") {
-      return res.status(400).json({ success: false, message: "Invalid user data" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid user data" });
     }
 
     if (!Array.isArray(items) || items.length === 0) {
@@ -14,26 +16,36 @@ export const placeOrder = async (req, res) => {
     }
 
     if (!shipping || typeof shipping !== "object") {
-      return res.status(400).json({ success: false, message: "Invalid shipping" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid shipping" });
     }
 
     if (!paymentProof) {
-      return res.status(400).json({ success: false, message: "Payment proof is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Payment proof is required" });
     }
 
     if (!totalAmount || isNaN(totalAmount)) {
-      return res.status(400).json({ success: false, message: "Invalid total amount" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid total amount" });
     }
 
     // Step 1: Validate availability
     for (const item of items) {
       const product = await Product.findById(item.productId);
       if (!product) {
-        return res.status(404).json({ success: false, message: `Product not found` });
+        return res
+          .status(404)
+          .json({ success: false, message: `Product not found` });
       }
 
       if (!Array.isArray(product.sizes)) {
-        return res.status(400).json({ success: false, message: `${product.name} has no sizes` });
+        return res
+          .status(400)
+          .json({ success: false, message: `${product.name} has no sizes` });
       }
 
       const sizeObj = product.sizes.find(
@@ -50,16 +62,29 @@ export const placeOrder = async (req, res) => {
 
     // Step 2: Deduct stock
     for (const item of items) {
-      const product = await Product.findById(item.productId);
-      const sizeIndex = product.sizes.findIndex(
-        (s) => s.size.toLowerCase() === item.size.toLowerCase()
-      );
+  const product = await Product.findById(item.productId);
+  if (!product) continue;
 
-      if (sizeIndex !== -1) {
-        product.sizes[sizeIndex].quantity -= item.quantity;
-        await product.save();
-      }
-    }
+  const sizeIndex = product.sizes.findIndex(
+    (s) => s.size.toLowerCase() === item.size.toLowerCase()
+  );
+
+  if (sizeIndex !== -1) {
+    product.sizes[sizeIndex].quantity -= item.quantity;
+
+    // 👇 Force Mongoose to track the subdocument change
+    product.markModified("sizes");
+
+    await product.save().catch((err) =>
+      console.error("❌ Error saving product:", err)
+    );
+
+    console.log(
+      `✅ Deducted ${item.quantity} from ${product.name} - ${item.size}. New qty: ${product.sizes[sizeIndex].quantity}`
+    );
+  }
+}
+
 
     // Step 3: Save order
     const newOrder = await Order.create({
@@ -78,7 +103,6 @@ export const placeOrder = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
 
 // GET /api/orders/my
 export const getMyOrders = async (req, res) => {
