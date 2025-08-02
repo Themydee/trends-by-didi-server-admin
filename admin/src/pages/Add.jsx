@@ -10,6 +10,9 @@ const Add = ({ token }) => {
   const [image3, setImage3] = useState(false);
   const [image4, setImage4] = useState(false);
 
+  const [colors, setColors] = useState([]);
+  const [currentColor, setCurrentColor] = useState("#000000");
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -38,6 +41,7 @@ const [wholesaleQty, setWholesaleQty] = useState(0);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
+      formData.append("colors", JSON.stringify(colors));
       formData.append("popular", popular);
       if (isWholesale) {
         formData.append(
@@ -239,6 +243,64 @@ const [wholesaleQty, setWholesaleQty] = useState(0);
             </div>
           </div>
         )}
+
+        <div>
+  <h5 className="h5">Product Colors</h5>
+  <div className="flex flex-col gap-2">
+    <div className="flex items-center gap-2">
+      <input
+        type="color"
+        id="colorPicker"
+        value={currentColor}
+        onChange={(e) => setCurrentColor(e.target.value)}
+        className="w-10 h-10 p-0 border-none rounded-full shadow"
+        style={{ border: "2px solid #ccc" }}
+      />
+      <button
+        type="button"
+        className="flex items-center gap-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        onClick={() => {
+          if (!colors.includes(currentColor)) setColors([...colors, currentColor]);
+        }}
+      >
+        <span className="text-lg font-bold">+</span> Add
+      </button>
+    </div>
+    <div className="flex gap-2 flex-wrap mt-1">
+      {colors.length === 0 && (
+        <span className="text-xs text-gray-400">No colors added</span>
+      )}
+      {colors.map((color) => (
+        <div
+          key={color}
+          className="flex items-center gap-1"
+        >
+          <span
+            style={{
+              background: color,
+              width: 28,
+              height: 28,
+              display: "inline-block",
+              borderRadius: "50%",
+              border: "2px solid #888",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+            }}
+            title={color}
+          />
+          <button
+            type="button"
+            className="text-red-500 hover:text-red-700 text-lg font-bold"
+            onClick={() => setColors(colors.filter((c) => c !== color))}
+            title="Remove color"
+            style={{ lineHeight: 1 }}
+          >
+            &times;
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
 
         <div className="flex gap-2 pt-2">
           <label htmlFor="image1">

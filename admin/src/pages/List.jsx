@@ -102,6 +102,27 @@ const List = ({ token }) => {
               )}
             </div>
 
+            <div className="col-span-full md:col-span-5 flex flex-wrap gap-2 mt-1">
+  {item.colors && item.colors.length > 0 ? (
+    item.colors.map((color, idx) => (
+      <span
+        key={idx}
+        style={{
+          background: color,
+          width: 20,
+          height: 20,
+          display: "inline-block",
+          borderRadius: "50%",
+          border: "1px solid #ccc",
+        }}
+        title={color}
+      />
+    ))
+  ) : (
+    <span className="text-xs text-gray-400">No colors</span>
+  )}
+</div>
+
             <div className="flex items-center justify-center md:justify-end">
               <button
                 onClick={() => removeProduct(item._id)}

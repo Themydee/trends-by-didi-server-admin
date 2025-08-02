@@ -18,6 +18,7 @@ const itemSchema = new mongoose.Schema({
   image: [String],
   price: Number,
   size: String,
+  color: [String],
   quantity: Number,
 }, { _id: false });
 

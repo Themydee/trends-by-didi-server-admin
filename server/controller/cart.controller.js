@@ -2,13 +2,13 @@ import { User } from "../models/user.models.js";
 
 export const addToCart = async (req, res) => {
   try {
-    const { itemId, size } = req.body;
+    const { itemId, size, color } = req.body; // <-- add color
     const userId = req.user.id;
 
-    if (!itemId || !size) {
+    if (!itemId || !size || !color) {
       return res.status(400).json({
         success: false,
-        message: "itemId and size are required",
+        message: "itemId, size, and color are required",
       });
     }
 
@@ -17,7 +17,7 @@ export const addToCart = async (req, res) => {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    const variantKey = `${size}`;
+    const variantKey = `${size}_${color}`; // <-- include color
     let cartData = userData.cartData || {};
 
     if (!cartData[itemId]) {
@@ -60,7 +60,7 @@ export const updateCart = async (req, res) => {
       });
     }
 
-    const variantKey = `${size}`;
+   const variantKey = `${size}_${color}`;
     const userData = await User.findById(userId);
     if (!userData) {
       return res.status(404).json({ success: false, message: "User not found" });

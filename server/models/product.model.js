@@ -43,6 +43,10 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  colors: {
+    type: Array,
+    default: [],
+  },
   date: {
     type: Number,
     required: true,

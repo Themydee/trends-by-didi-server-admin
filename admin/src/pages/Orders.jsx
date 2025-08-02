@@ -147,6 +147,19 @@ const Orders = ({ token }) => {
                     <p>
                       {item.quantity} × ₦{item.price}
                       {item.size && <span> (Size: {item.size})</span>}
+                      {item.color && item.color.length > 0 && (
+  <div className="flex items-center gap-2 mt-1">
+    <span>Colors:</span>
+    {item.color.map((color, idx) => (
+      <div
+        key={idx}
+        className="w-4 h-4 rounded-full border"
+        style={{ backgroundColor: color }}
+        title={color}
+      ></div>
+    ))}
+  </div>
+)}
                     </p>
                   </div>
                 </li>
